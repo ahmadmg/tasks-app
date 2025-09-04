@@ -1,22 +1,25 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import TaskForm from './components/TaskForm.vue'
+import TaskForm from "./components/TaskForm.vue";
+import TaskList from "./components/TaskList.vue";
 const message = ref("Tasks App");
-const tasks= ref<Task[]>([]);
+const tasks = ref<Task[]>([]);
 function addTask(newTask) {
-tasks.value.push({
-  id:crypto.randomUUID(),
-  title:newTask,
-  done: false,
-})
+  tasks.value.push({
+    id: crypto.randomUUID(),
+    title: newTask,
+    done: false,
+  });
 }
 </script>
 
 <template>
   <main>
     <h1>{{ message }}</h1>
-  <TaskForm @add-task="addTask" />
-  <h3> There are {{tasks.length}} tasks. </h3>
+    <TaskForm @add-task="addTask" />
+    <h3 v-if="!tasks.length">Add a task to get started.</h3>
+    <h3 v-else> 0 / {{tasks.length}} tasks completed </h3>
+    <TaskList :tasks />
   </main>
 </template>
 
@@ -29,6 +32,5 @@ main {
 .button-container {
   display: flex;
   justify-content: end;
-  gap: 0.5rem;
 }
 </style>
