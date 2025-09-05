@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Task } from "../types";
+import type { Task } from '../types';
 
 const props = defineProps<{
-  tasks: Task[];
+  tasks: Task[]
 }>();
 
 const emits = defineEmits<{
@@ -10,19 +10,25 @@ const emits = defineEmits<{
   removeTask: [id: string];
 }>();
 </script>
+
 <template>
-  <article v-for="task in props.tasks" :key="task.id">
-    <label>
-      <input 
+  <TransitionGroup name="task-list" tag="div" class="task-list">
+    <article v-for="task in props.tasks" class="task" :key="task.id">
+      <label>
+        <input 
           @input="emits('toggleDone', task.id)"
           :checked="task.done"
-          type="checkbox"/>
-      {{ task.title }}
-    </label>
-  </article>
+          type="checkbox"
+        >
+        <span :class="{ done: task.done }">{{ task.title }}</span>
+      </label>
+      <button @click="emits('removeTask', task.id)" class="outline">Remove</button>
+    </article>
+  </TransitionGroup>
 </template>
 
 <style>
+
 .task-list {
   margin-top: 1rem;
 }
@@ -46,4 +52,6 @@ const emits = defineEmits<{
   opacity: 0;
   transform: translateX(300px);
 }
+
+
 </style>
